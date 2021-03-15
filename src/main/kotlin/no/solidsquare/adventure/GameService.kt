@@ -1,5 +1,7 @@
-package no.solidsquare.adventure.game
+package no.solidsquare.adventure
 
+import no.solidsquare.adventure.game.Rom
+import no.solidsquare.adventure.game.Spiller
 import org.springframework.stereotype.Service
 
 @Service
@@ -19,8 +21,8 @@ class GameService {
         return romPosisjon
     }
 
-    fun tillattTrekk(svar: Svar): Boolean {
-        if (bevegelser.contains(svar.svar)) {
+    fun tillattTrekk(svar: String): Boolean {
+        if (bevegelser.contains(svar)) {
             advarsel = ""
             beveg(svar)
             return true
@@ -29,8 +31,8 @@ class GameService {
         return false
     }
 
-    fun beveg(svar: Svar) {
-        when(svar.svar) {
+    fun beveg(svar: String) {
+        when(svar) {
             "opp" -> kanBevege(romPosisjon.opp) //if (romPosisjon.opp >= 0) romPosisjon = map[romPosisjon.opp]
             "venstre" -> kanBevege(romPosisjon.venstre)// if (romPosisjon.venstre >= 0) romPosisjon = map[romPosisjon.venstre]
             "ned" -> kanBevege(romPosisjon.ned)//if (romPosisjon.ned >= 0) romPosisjon = map[romPosisjon.ned]
@@ -39,11 +41,11 @@ class GameService {
     }
 
     fun kanBevege(pos: Int) {
-        if (pos < 0) advarsel = "Du kan ikke gå denne retningen"
+        if (pos < 0) return //TODO denne skal også si " ikke tillatt trekk
         romPosisjon= map[pos]
     }
 
-    fun gjennopprett(): Spiller {
+    fun gjennopprett(id: String): Spiller {
         return Spiller(getPosisjon())
     }
 }

@@ -1,5 +1,7 @@
-package no.solidsquare.adventure.game
+package no.solidsquare.adventure
 
+import no.solidsquare.adventure.game.Rom
+import no.solidsquare.adventure.game.Spiller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -9,15 +11,13 @@ import kotlin.Exception
 @RestController
 class GameController(private val service: GameService) {
 
-    @GetMapping("/")
-    fun start(): Rom {
-        return service.map[0]
-    }
+    @GetMapping("/start")
+    fun start(): Rom = service.map[0]
 
-    @GetMapping("/{svar}")
-    fun getSvar(@PathVariable svar: Svar): Rom {
+    @GetMapping("svar/{svar}")
+    fun getSvar(@PathVariable svar: String): Rom {
         if (!service.tillattTrekk(svar))
-            throw Exception("feil trekk")
+            return service.romPosisjon.copy(beskrivelse = "Ikke tillatt trekk")
 
         return service.getPosisjon()
     }
@@ -26,8 +26,8 @@ class GameController(private val service: GameService) {
     fun lagre(spiller: Spiller): Boolean = true
 
 
-    @GetMapping("/gjenopprett")
-    fun gjennopprett(id: String): Spiller {
-        return service.gjennopprett()
+    @GetMapping("/gjenopprett/{id}")
+    fun gjennopprett(@PathVariable id: String): Spiller {
+        return service.gjennopprett(id)
     }
 }
