@@ -1,9 +1,12 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 
 const App: React.FC = () => {
-    let initialState = {navn:'',
+
+    let rom = {navn:'',
         beskrivelse: ''};
-    const [rom, doHydrate] = useState(initialState);
+
+    let initialState = {rom: rom, advarsel: ''};
+    const [spillerObjekt, doHydrate] = useState(initialState);
     const [input, userInput] = useState("");
 
     useEffect(() => {
@@ -41,9 +44,10 @@ const App: React.FC = () => {
     <div>
       <h1>Et solid eventyr!</h1>
 
-        <h2>{rom.navn}</h2>
-        <p>{rom.beskrivelse}</p>
+        <h2>{spillerObjekt.rom.navn}</h2>
+        <p>{spillerObjekt.rom.beskrivelse}</p>
 
+        <p>{spillerObjekt.advarsel}</p>
         <div>
             <input
                 type="text"

@@ -1,25 +1,23 @@
 package no.solidsquare.adventure
 
-import no.solidsquare.adventure.game.Rom
 import no.solidsquare.adventure.game.Spiller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
-import kotlin.Exception
 
 @RestController
 class GameController(private val service: GameService) {
 
     @GetMapping("/start")
-    fun start(): Rom = service.map[0]
+    fun start(): Spiller = service.getSpiller()
 
     @GetMapping("svar/{svar}")
-    fun getSvar(@PathVariable svar: String): Rom {
+    fun getSvar(@PathVariable svar: String): Spiller {
         if (!service.tillattTrekk(svar))
-            return service.romPosisjon.copy(beskrivelse = "Ikke tillatt trekk")
+            return service.getSpiller().copy(advarsel = "Ikke tillatt trekk")
 
-        return service.getPosisjon()
+        return service.getSpiller()
     }
 
     @PostMapping("/lagre")
